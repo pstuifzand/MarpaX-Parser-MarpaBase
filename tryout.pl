@@ -38,10 +38,11 @@ WS        ::= WhiteSpace+
 WS        ::= Null
 GRAMMAR
 
+### Parse the grammar
 my $io = IO::String->new($grammar);
 my $tree = $parser->parse($io);
-print Dumper($tree->{rules});
 
+### Generate a text version of the grammar
 for my $token (@{$tree->{tokens}}) {
     if (exists $token->{regex}) {
         say sprintf('%-13s = /%s/', $token->{lhs}, $token->{regex});
