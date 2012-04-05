@@ -55,11 +55,11 @@ sub MarpaX::Parser::MarpaBase::Actions::Parser_0 {
 }
 
 sub MarpaX::Parser::MarpaBase::Actions::TokenRule_0 {
-	shift; return { @{$_[0]}, regex => qr/$_[3]/ } 
+	shift; return { @{$_[0]}, regex => qr/$_[5]/ } 
 }
 
 sub MarpaX::Parser::MarpaBase::Actions::TokenRule_1 {
-	shift; return { @{$_[0]}, 'char' => $_[2] } 
+	shift; return { @{$_[0]}, 'char' => $_[4] } 
 }
 
 sub MarpaX::Parser::MarpaBase::Actions::Rule_0 {
@@ -103,7 +103,9 @@ sub create_grammar {
                        {
                          'rhs' => [
                                     'Lhs',
+                                    'WS',
                                     'EQ',
+                                    'WS',
                                     'SLASH',
                                     'RX',
                                     'SLASH',
@@ -114,7 +116,9 @@ sub create_grammar {
                        {
                          'rhs' => [
                                     'Lhs',
+                                    'WS',
                                     'EQ',
+                                    'WS',
                                     'Char',
                                   ],
                          'lhs' => 'TokenRule',
