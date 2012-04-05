@@ -43,11 +43,11 @@ sub MarpaX::Parser::MarpaBase::Actions::Rhs_0 {
 }
 
 sub MarpaX::Parser::MarpaBase::Actions::Rhs_1 {
-	shift; return [ rhs => $_[0], min => 0 ] 
+	shift; return [ rhs => [ $_[0] ], min => 0 ] 
 }
 
 sub MarpaX::Parser::MarpaBase::Actions::Rhs_2 {
-	shift; return [ rhs => $_[0], min => 1 ] 
+	shift; return [ rhs => [ $_[0] ], min => 1 ] 
 }
 
 sub MarpaX::Parser::MarpaBase::Actions::Parser_0 {
