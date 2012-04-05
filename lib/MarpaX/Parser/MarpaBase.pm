@@ -34,6 +34,9 @@ sub MarpaX::Parser::MarpaBase::Actions::Decl_1 {
 sub MarpaX::Parser::MarpaBase::Actions::Names_0 {
 	shift; return [ @_ ];                    
 }
+sub MarpaX::Parser::MarpaBase::Actions::Names_1 {
+	shift; return $_[1];                    
+}
 
 sub MarpaX::Parser::MarpaBase::Actions::Rhs_0 {
 	shift; return [ rhs => $_[0] ]           
@@ -64,7 +67,7 @@ sub MarpaX::Parser::MarpaBase::Actions::Rule_0 {
 }
 
 sub MarpaX::Parser::MarpaBase::Actions::Rule_1 {
-	shift; return { @{$_[0]}, @{$_[2]}, code => $_[4] }     
+	shift; return { @{$_[0]}, @{$_[4]}, code => $_[7] }     
 }
 
 sub create_grammar {
@@ -83,14 +86,16 @@ sub create_grammar {
                        },
                        {
                          'rhs' => [
-                                    'Rule'
+                                    'Rule',
+                                    'WS',
                                   ],
                          'lhs' => 'Decl',
                          'action' => 'Decl_0'
                        },
                        {
                          'rhs' => [
-                                    'TokenRule'
+                                    'TokenRule',
+                                    'WS',
                                   ],
                          'lhs' => 'Decl',
                          'action' => 'Decl_1'
@@ -101,7 +106,7 @@ sub create_grammar {
                                     'EQ',
                                     'SLASH',
                                     'RX',
-                                    'SLASH'
+                                    'SLASH',
                                   ],
                          'lhs' => 'TokenRule',
                          'action' => 'TokenRule_0'
@@ -110,7 +115,7 @@ sub create_grammar {
                          'rhs' => [
                                     'Lhs',
                                     'EQ',
-                                    'Char'
+                                    'Char',
                                   ],
                          'lhs' => 'TokenRule',
                          'action' => 'TokenRule_1'
@@ -121,7 +126,7 @@ sub create_grammar {
                                     'WS',
                                     'DeclareOp',
                                     'WS',
-                                    'Rhs'
+                                    'Rhs',
                                   ],
                          'lhs' => 'Rule',
                          'action' => 'Rule_0'
@@ -129,8 +134,11 @@ sub create_grammar {
                        {
                          'rhs' => [
                                     'Lhs',
+                                    'WS',
                                     'DeclareOp',
+                                    'WS',
                                     'Rhs',
+                                    'WS',
                                     'CB',
                                     'Code',
                                     'CE'
@@ -155,7 +163,7 @@ sub create_grammar {
                        },
                        {
                          'rhs' => [
-                                    'Names',
+                                    'Name',
                                     'Star'
                                   ],
                          'lhs' => 'Rhs',
@@ -163,7 +171,7 @@ sub create_grammar {
                        },
                        {
                          'rhs' => [
-                                    'Names',
+                                    'Name',
                                     'Plus'
                                   ],
                          'lhs' => 'Rhs',
@@ -172,15 +180,22 @@ sub create_grammar {
                        {
                          'min' => 1,
                          'rhs' => [
-                                    'Name'
+                                    'WSName'
                                   ],
                          'lhs' => 'Names',
                          'action' => 'Names_0'
                        },
                        {
+                         'rhs' => [
+                                    'WS', 
+                                    'Name',
+                                  ],
+                         'lhs' => 'WSName',
+                         'action' => 'Names_1'
+                       },
+                       {
                            lhs => 'WS',
                            rhs => [ 'WhiteSpace' ],
-                           min => 1,
                        },
                        {
                            lhs => 'WS',
