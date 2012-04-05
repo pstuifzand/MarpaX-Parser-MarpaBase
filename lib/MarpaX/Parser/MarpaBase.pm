@@ -17,9 +17,10 @@ my %tokens = (
        EQ                             => '=',
        RX                             => qr/(?^:(?<!\/)(.+)(?=(?<!\/)))/,
        Char                           => qr/(?^:\$(.))/,
+       WhiteSpace                     => qr/[ \t\r\n]+/,
 );
 sub MarpaX::Parser::MarpaBase::Actions::Lhs_0 {
-	shift; return [ lhs => $_[0] ]           
+	shift; return [ lhs => $_[1] ]
 }
 
 sub MarpaX::Parser::MarpaBase::Actions::Decl_0 {
@@ -59,7 +60,7 @@ sub MarpaX::Parser::MarpaBase::Actions::TokenRule_1 {
 }
 
 sub MarpaX::Parser::MarpaBase::Actions::Rule_0 {
-	shift; return { @{$_[0]}, @{$_[2]} }     
+	shift; return { @{$_[0]}, @{$_[4]} };
 }
 
 sub MarpaX::Parser::MarpaBase::Actions::Rule_1 {
@@ -117,7 +118,9 @@ sub create_grammar {
                        {
                          'rhs' => [
                                     'Lhs',
+                                    'WS',
                                     'DeclareOp',
+                                    'WS',
                                     'Rhs'
                                   ],
                          'lhs' => 'Rule',
@@ -137,6 +140,7 @@ sub create_grammar {
                        },
                        {
                          'rhs' => [
+                                    'WS',
                                     'Name'
                                   ],
                          'lhs' => 'Lhs',
@@ -172,7 +176,16 @@ sub create_grammar {
                                   ],
                          'lhs' => 'Names',
                          'action' => 'Names_0'
-                       }
+                       },
+                       {
+                           lhs => 'WS',
+                           rhs => [ 'WhiteSpace' ],
+                           min => 1,
+                       },
+                       {
+                           lhs => 'WS',
+                           rhs => [],
+                       },
                      ]
         ,            lhs_terminals => 0,
         }
